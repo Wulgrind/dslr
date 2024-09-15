@@ -28,7 +28,7 @@ def gradient_descent(weights, X, y, learning_rate=0.01, num_iterations=1000):
         for i in range(m):
             x_biased = [1] + X[i]
             h = hypothesis(weights, x_biased)
-            error = h - y[1]
+            error = h - y[i]
 
             for j in range(len(weights)):
                 gradients[j] += error * x_biased[j]
@@ -54,7 +54,7 @@ def cost_function(weights, X, y):
     
     return total_cost / m
 
-def encode_label(Y):
+def encode_label(y):
     unique_labels = list(set(y))
     label_mapping = {label : index for index, label in enumerate(unique_labels)}
     y_encoded = [label_mapping[label] for label in y]

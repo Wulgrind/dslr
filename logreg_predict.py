@@ -46,14 +46,17 @@ if __name__ == '__main__':
     X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
     X = normalize_features(X)
     weights = []
+    houses = []
     with open('weights.txt', 'r') as f:
         for line in f:
-            # Lecture de chaque ligne (chaque maison), séparation par virgule
             parts = line.strip().split(',')
-            weights.append([float(w) for w in parts[1:]])  # Ignorer le nom de la maison (premier élément)
+            house = parts[0]
+            houses.append(house)
+            weights.append([float(w) for w in parts[1:]])
     predictions = predict(weights, X)
 
     with open('houses.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         for prediction in predictions :
-            writer.writerow([prediction])
+            house_name = houses[prediction]
+            writer.writerow([house_name])
