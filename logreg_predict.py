@@ -1,0 +1,59 @@
+import sys
+import pandas as pd
+import numpy as np
+import csv
+
+def normalize_features(X):
+    X_normalized = []
+    for i in range(len(X[0])):
+        col = [row[i] for row in X]
+        min_val = min(col)
+        max_val = max(col)
+        normalized_col = [(x - min_val) / (max_val - min_val) for x in col]
+        for j in range(len(X)):
+            if i == 0:
+                X_normalized.append([normalized_col[j]])
+            else :
+                X_normalized[j].append(normalized_col[j])
+    return X_normalized
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def hypothesis(weights, x):
+    z = sum([weights[i] * x[i] for i in range(len(weights))])
+    return (sigmoid(z))
+
+def predict(weights, X):
+    predictions = []
+
+    for x in X:
+        x_biased = [1] + x
+        probabilities = [hypothesis(w, x_biased) for w in weights]
+        predicted_class = probabilities.index(max(probabilities))
+        predictions.append(predicted_class)
+    return predictions
+
+if __name__ == '__main__':
+    filePath = sys.argv[1]
+    data = pd.read_csv(filePath)
+
+    data = data.dropna(subset=['Defense Against the Dark Arts'])
+    data = data.dropna(subset=['Charms'])
+    data = data.dropna(subset=['Herbology'])
+    data = data.dropna(subset=['Divination'])
+    data = data.dropna(subset=['Muggle Studies'])
+    X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
+    X = normalize_features(X)
+    weights = []
+    with open('weights.txt', 'r') as f:
+        for line in f:
+            # Lecture de chaque ligne (chaque maison), séparation par virgule
+            parts = line.strip().split(',')
+            weights.append([float(w) for w in parts[1:]])  # Ignorer le nom de la maison (premier élément)
+    predictions = predict(weights, X)
+
+    with open('houses.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        for prediction in predictions :
+            writer.writerow([prediction])
