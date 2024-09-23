@@ -57,6 +57,9 @@ if __name__ == '__main__':
 
     with open('houses.csv', 'w', newline='') as file:
         writer = csv.writer(file)
+        i = 0
+        writer.writerow(['Index', 'Hogwarts House'])
         for prediction in predictions :
             house_name = houses[prediction]
-            writer.writerow([house_name])
+            writer.writerow([i, house_name])
+            i += 1
