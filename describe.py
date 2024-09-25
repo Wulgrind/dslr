@@ -13,23 +13,30 @@ def prnt_percentile (data):
     retq2 ="50%     "
     retq3 ="75%     "
     while i < len(features) :
-        retq1 += prnt_value(calculate_percentile(data[i], 25), features[i]) + ' '
-        retq2 += prnt_value(calculate_percentile(data[i], 50), features[i]) + ' '
-        retq3 += prnt_value(calculate_percentile(data[i], 75), features[i]) + ' '
+        retq1 += prnt_value(str(calculate_percentile(data[i], 25))[0:10], features[i]) + ' '
+        retq2 += prnt_value(str(calculate_percentile(data[i], 50))[0:10], features[i]) + ' '
+        retq3 += prnt_value(str(calculate_percentile(data[i], 75))[0:10], features[i]) + ' '
         i += 1
     print (retq1 + '\n' + retq2 + '\n' + retq3)
 
 def prnt_feats(features):
     ret = ""
     for feature in features :
-        ret += feature  + "  "
+        l1 = len(feature)
+        while l1 < 10 :
+            l1 += 1
+            ret += ' '
+        ret += feature  + " "
     print("        " + ret)
 
 def prnt_value(val, feature):
     l1 = len(feature)
     l2 = len(str(val))
     ret = ""
-    while l2 < l1:
+    while l2 < len(feature):
+        l2 += 1
+        ret += " "
+    while l2 < 10:
         l2 += 1
         ret += " "
     ret += str(val)
@@ -38,7 +45,7 @@ def prnt_value(val, feature):
 def prnt_count(count, features):
     ret = 'count   '
     for feature in features:
-        ret += prnt_value(count, feature) + '  '
+        ret += prnt_value(str(count)[0:10], feature) + ' '
     print(ret)
 
 def prnt_mean(total, count):
@@ -48,7 +55,7 @@ def prnt_mean(total, count):
         mean.append(float(val) / float(count))
     i = 0
     while i < len(mean):
-        ret += prnt_value(mean[i], features[i]) + '  '
+        ret += prnt_value(str(mean[i])[0:10], features[i]) + ' '
         i += 1
     print(ret)
     return mean
@@ -61,7 +68,7 @@ def prnt_std(data,mean):
         sum_squared_diff = sum((float(x) - float(mean[i])) ** 2 for x in data[i])
         variance = sum_squared_diff / (len(data[i]) - 1)
         std.append(variance ** 0.5)
-        ret += prnt_value(std[i], features[i]) + ' '
+        ret += prnt_value(str(std[i])[0:10], features[i]) + ' '
         i += 1
     print(ret)
     return std
@@ -76,7 +83,7 @@ def prnt_min(data):
             if mintmp == 0 or float(elem) < mintmp :
                 mintmp = float(elem)
         min.append(mintmp)
-        ret += prnt_value(mintmp, features[i]) + ' '
+        ret += prnt_value(str(mintmp)[0:10], features[i]) + ' '
         i += 1
     print(ret)
     return min
@@ -91,7 +98,7 @@ def prnt_max(data):
             if maxtmp == 0 or float(elem) > maxtmp :
                 maxtmp = float(elem)
         max.append(maxtmp)
-        ret += prnt_value(maxtmp, features[i]) + ' '
+        ret += prnt_value(str(maxtmp)[0:10], features[i]) + ' '
         i += 1
     print(ret)
     return max
@@ -105,7 +112,7 @@ def prnt_irq(data): # interquartile range
         q3 = float(calculate_percentile(data[i], 75))
         iqr_value = q3 - q1
         irq.append(iqr_value)
-        ret += prnt_value(iqr_value, features[i]) + ' '
+        ret += prnt_value(str(iqr_value)[0:10], features[i]) + ' '
         i += 1
     print(ret)
     return irq
