@@ -66,7 +66,3 @@ if __name__ == '__main__':
     #predicted_labels = predicted_data['Hogwarts House']
     #accuracy = accuracy_score(true_labels, predicted_labels)
     #print(f"L'accuracy de votre modèle est : {accuracy * 100:.2f}%")
-    #if accuracy >= 0.98:
-    #    print("Votre modèle est aussi performant que le Choixpeau magique!")
-    #else:
-    #    print("Votre modèle doit encore s'améliorer.")
