@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 import csv
+from sklearn.metrics import accuracy_score
 
 def normalize_features(X):
     X_normalized = []
@@ -37,12 +38,8 @@ def predict(weights, X):
 if __name__ == '__main__':
     filePath = sys.argv[1]
     data = pd.read_csv(filePath)
+    data = data.fillna(method='ffill')
 
-    data = data.dropna(subset=['Defense Against the Dark Arts'])
-    data = data.dropna(subset=['Charms'])
-    data = data.dropna(subset=['Herbology'])
-    data = data.dropna(subset=['Divination'])
-    data = data.dropna(subset=['Muggle Studies'])
     X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
     X = normalize_features(X)
     weights = []
@@ -63,3 +60,13 @@ if __name__ == '__main__':
             house_name = houses[prediction]
             writer.writerow([i, house_name])
             i += 1
+    #test_data = pd.read_csv('dataset_train.csv')
+    #predicted_data = pd.read_csv('houses.csv')
+    #true_labels = test_data['Hogwarts House']
+    #predicted_labels = predicted_data['Hogwarts House']
+    #accuracy = accuracy_score(true_labels, predicted_labels)
+    #print(f"L'accuracy de votre modèle est : {accuracy * 100:.2f}%")
+    #if accuracy >= 0.98:
+    #    print("Votre modèle est aussi performant que le Choixpeau magique!")
+    #else:
+    #    print("Votre modèle doit encore s'améliorer.")

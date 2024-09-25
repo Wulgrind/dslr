@@ -21,7 +21,7 @@ def normalize_features(X):
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
-def gradient_descent(weights, X, y, learning_rate=0.01, num_iterations=1000):
+def gradient_descent(weights, X, y, learning_rate=1, num_iterations=1000):
     m = len(y)
     for iteration in range(num_iterations):
         gradients = [0] * len(weights)
@@ -43,30 +43,17 @@ def hypothesis(weights, x):
     z = sum([weights[i] * x[i] for i in range(len(weights))])
     return (sigmoid(z))
 
-def cost_function(weights, X, y):
-    m = len(y)
-    total_cost = 0
-
-    for i in range(m):
-        x_biased = [1] + X[i]
-        h = hypothesis(weights, x_biased)
-        total_cost += -y[i] * np.log(h) - (1 - y[i]) * np.log(1 - h)
-    
-    return total_cost / m
-
 def encode_label(y):
     unique_labels = list(set(y))
     label_mapping = {label : index for index, label in enumerate(unique_labels)}
     y_encoded = [label_mapping[label] for label in y]
     return y_encoded, label_mapping
 
-def training(X, y , num_classes, learning_rate = 0.01, num_iterations = 10000):
+def training(X, y , num_classes):
     all_weights = []
     for class_label in range(num_classes):
         y_binary = [1 if label == class_label else 0 for label in y]
-
         weights = init_weigths(len(X[0]))
-
         weights_trained = gradient_descent(weights, X, y_binary)
         all_weights.append(weights_trained)
     
@@ -88,8 +75,6 @@ if __name__ == '__main__':
     y_num, school_dict = encode_label(y)
 
     weights = init_weigths(len(X[0]))
-    cost = cost_function(weights, X, y_num)
-    weights_trained = gradient_descent(weights, X, y_num)
     weights_all = training(X, y_num, len(school_dict))
     with open('weights.txt', 'w') as f:
         for i, weights in enumerate(weights_all):

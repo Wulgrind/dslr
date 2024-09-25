@@ -96,6 +96,21 @@ def prnt_max(data):
     print(ret)
     return max
 
+def prnt_irq(data): # interquartile range
+    i = 0
+    irq = []
+    ret = 'iqr     '
+    while i < len(features):
+        q1 = float(calculate_percentile(data[i], 25))
+        q3 = float(calculate_percentile(data[i], 75))
+        iqr_value = q3 - q1
+        irq.append(iqr_value)
+        ret += prnt_value(iqr_value, features[i]) + ' '
+        i += 1
+    print(ret)
+    return irq
+
+
 def get_values(data,count):
     total = []
     for line in data:
@@ -111,9 +126,9 @@ def get_values(data,count):
     prnt_min(data)
     prnt_percentile(data)
     prnt_max(data)
+    prnt_irq(data)
 
         
-
 if __name__ == "__main__":
     filePath = sys.argv[1]
     data = []
