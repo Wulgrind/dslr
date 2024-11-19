@@ -39,6 +39,6 @@ if __name__ == "__main__":
         plt.bar(courses.keys(), courses.values(), color='blue', alpha=0.7)
         plt.xlabel('Courses')
         plt.ylabel('Variance')
-        plt.title('Comparaison des variances entre les cours')
+        plt.title('Comparaison des variances selon les cours')
         plt.show() 
         
