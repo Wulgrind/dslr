@@ -1,11 +1,17 @@
 import sys
 
 def calculate_percentile(data, percentile):
-    sorted_data = sorted(data)
+    sorted_data = sorted(map(float, data))
 
-    index = int(percentile * len(sorted_data) / 100.0)
+    rank = (percentile / 100.0) * (len(sorted_data) - 1)
+    lower_index = int(rank)
+    upper_index = lower_index + 1 
 
-    return sorted_data[index]
+    if upper_index >= len(sorted_data):
+        return sorted_data[lower_index]
+    weight = rank - lower_index
+    return sorted_data[lower_index] * (1 - weight) + sorted_data[upper_index] * weight
+
 
 def prnt_percentile (data):
     i = 0
