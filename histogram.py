@@ -40,5 +40,5 @@ if __name__ == "__main__":
         plt.xlabel('Courses')
         plt.ylabel('Variance')
         plt.title('Comparaison des variances entre les cours')
-        plt.show() # La plus petite variance est la plus homogene
+        plt.show() 
         
