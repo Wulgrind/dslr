@@ -60,23 +60,26 @@ def training(X, y , num_classes):
     return all_weights
     
 if __name__ == '__main__':
-    filePath = sys.argv[1]
-    data = pd.read_csv(filePath)
+    try :
+        filePath = sys.argv[1]
+        data = pd.read_csv(filePath)
 
-    data = data.dropna(subset=['Defense Against the Dark Arts'])
-    data = data.dropna(subset=['Charms'])
-    data = data.dropna(subset=['Herbology'])
-    data = data.dropna(subset=['Divination'])
-    data = data.dropna(subset=['Muggle Studies'])
+        data = data.dropna(subset=['Defense Against the Dark Arts'])
+        data = data.dropna(subset=['Charms'])
+        data = data.dropna(subset=['Herbology'])
+        data = data.dropna(subset=['Divination'])
+        data = data.dropna(subset=['Muggle Studies'])
 
-    X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
-    X = normalize_features(X)
-    y = data['Hogwarts House']
-    y_num, school_dict = encode_label(y)
+        X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
+        X = normalize_features(X)
+        y = data['Hogwarts House']
+        y_num, school_dict = encode_label(y)
 
-    weights = init_weigths(len(X[0]))
-    weights_all = training(X, y_num, len(school_dict))
-    with open('weights.txt', 'w') as f:
-        for i, weights in enumerate(weights_all):
-            house = list(school_dict.keys())[list(school_dict.values()).index(i)]
-            f.write(f"{house},{','.join(map(str, weights))}\n")
+        weights = init_weigths(len(X[0]))
+        weights_all = training(X, y_num, len(school_dict))
+        with open('weights.txt', 'w') as f:
+            for i, weights in enumerate(weights_all):
+                house = list(school_dict.keys())[list(school_dict.values()).index(i)]
+                f.write(f"{house},{','.join(map(str, weights))}\n")
+    except :
+        print("You must provide a valid csv file as the first argument")

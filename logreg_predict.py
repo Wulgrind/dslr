@@ -36,33 +36,36 @@ def predict(weights, X):
     return predictions
 
 if __name__ == '__main__':
-    filePath = sys.argv[1]
-    data = pd.read_csv(filePath)
-    data = data.fillna(method='ffill')
+    try :
+        filePath = sys.argv[1]
+        data = pd.read_csv(filePath)
+        data = data.fillna(method='ffill')
 
-    X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
-    X = normalize_features(X)
-    weights = []
-    houses = []
-    with open('weights.txt', 'r') as f:
-        for line in f:
-            parts = line.strip().split(',')
-            house = parts[0]
-            houses.append(house)
-            weights.append([float(w) for w in parts[1:]])
-    predictions = predict(weights, X)
+        X = np.array(data.values[:, [9, 17, 8, 10, 11]], dtype=float)
+        X = normalize_features(X)
+        weights = []
+        houses = []
+        with open('weights.txt', 'r') as f:
+            for line in f:
+                parts = line.strip().split(',')
+                house = parts[0]
+                houses.append(house)
+                weights.append([float(w) for w in parts[1:]])
+        predictions = predict(weights, X)
 
-    with open('houses.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        i = 0
-        writer.writerow(['Index', 'Hogwarts House'])
-        for prediction in predictions :
-            house_name = houses[prediction]
-            writer.writerow([i, house_name])
-            i += 1
-    #test_data = pd.read_csv('dataset_train.csv')
-    #predicted_data = pd.read_csv('houses.csv')
-    #true_labels = test_data['Hogwarts House']
-    #predicted_labels = predicted_data['Hogwarts House']
-    #accuracy = accuracy_score(true_labels, predicted_labels)
-    #print(f"L'accuracy de votre modèle est : {accuracy * 100:.2f}%")
+        with open('houses.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            i = 0
+            writer.writerow(['Index', 'Hogwarts House'])
+            for prediction in predictions :
+                house_name = houses[prediction]
+                writer.writerow([i, house_name])
+                i += 1
+        #test_data = pd.read_csv('dataset_truth.csv')
+        #predicted_data = pd.read_csv('houses.csv')
+        #true_labels = test_data['Hogwarts House']
+        #predicted_labels = predicted_data['Hogwarts House']
+        #accuracy = accuracy_score(true_labels, predicted_labels)
+        #print(f"L'accuracy de votre modèle est : {accuracy * 100:.2f}%")
+    except :
+        print("You must provide a valid csv file as the first argument")
